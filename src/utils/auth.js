@@ -1,4 +1,7 @@
 export const BASE_URL = "https://register.nomoreparties.co";
+// export const BASE_URL = "https://express-api-tripleten.vercel.app/";
+// export const BASE_URL = "https://dummyjson.com/docs/auth#auth-login";
+// repo: https://github.com/HoracioGutierrez/express-api-tripleten.git
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -33,6 +36,7 @@ export const authorize = (email, password) => {
   })
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       if (data.jwt) {
         localStorage.setItem("jwt", data.jwt);
         return data;

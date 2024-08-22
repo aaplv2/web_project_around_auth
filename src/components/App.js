@@ -4,11 +4,15 @@ import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
 import api from "../utils/api.js";
+import auth from "../utils/auth.js";
 
 import "../index.css";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { CurrentCardContext } from "../contexts/CurrentCardContext.js";
 import { PopupContext } from "../contexts/PopupProvider.js";
+import ProtectedRoute from "./ProtectedRoute.js";
+import Register from "./Register.js";
+import Login from "./Login.js";
 
 function App() {
   const [isAddPlacePopoutOpen, setIsAddPlacePopoutOpen] = useState(false);
@@ -16,9 +20,12 @@ function App() {
   const [isEditProfilePopoutOpen, setIsEditProfilePopoutOpen] = useState(false);
   const [isDeleteCardOpen, setIsDeleteCardOpen] = useState(false);
   const [isZoomImageOpen, setIsZoomImageOpen] = useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [currentCards, setCurrentCards] = useState([]);
+  const [loggedIn, setIsLoggedIn] = useState(true);
 
   useEffect(() => {
     api.getUserInfo().then((data) => {
@@ -56,6 +63,7 @@ function App() {
     setIsEditProfilePopoutOpen(false);
     setIsDeleteCardOpen(false);
     setIsZoomImageOpen(false);
+    setIsInfoTooltipOpen(false);
     setSelectedCard({});
   };
 
@@ -111,31 +119,61 @@ function App() {
             <div className="page">
               <Header></Header>
               <Routes>
-                <Route path="/signup" />
-                <Route path="/signin" />
-                <Route path="/" />
+                <Route path="/signup" element={<Register />} />
+                <Route
+                  path="/signin"
+                  element={
+                    <Login
+                      handleCloseTooltip={closeAllPopouts}
+                      isInfoTooltipOpen={isInfoTooltipOpen}
+                      setIsInfoTooltipOpen={setIsInfoTooltipOpen}
+                    />
+                  }
+                />
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute loggedIn={loggedIn}>
+                      <Main
+                        isEditAvatarPopoutOpen={isEditAvatarPopoutOpen}
+                        isEditProfilePopoutOpen={isEditProfilePopoutOpen}
+                        isAddPlacePopoutOpen={isAddPlacePopoutOpen}
+                        isDeleteCardOpen={isDeleteCardOpen}
+                        isZoomImageOpen={isZoomImageOpen}
+                        selectedCard={selectedCard}
+                        onEditAvatarClick={handleEditAvatarClick}
+                        onEditProfileClick={handleEditProfileClick}
+                        onAddPlaceClick={handleAddPlaceClick}
+                        onDeleteCardClick={handleDeleteCardClick}
+                        onCardClick={handleZoomImageClick}
+                        onClose={closeAllPopouts}
+                        onUpdateUser={handleUpdateUser}
+                        onUpdateAvatar={handleAvatarUpdate}
+                        onAddPlace={handleAddPlace}
+                        handleCardLike={handleCardLike}
+                        onCardDelete={handleCardDelete}
+                      ></Main>
+                    </ProtectedRoute>
+                  }
+                />
               </Routes>
-              <Main
-                isEditAvatarPopoutOpen={isEditAvatarPopoutOpen}
-                isEditProfilePopoutOpen={isEditProfilePopoutOpen}
-                isAddPlacePopoutOpen={isAddPlacePopoutOpen}
-                isDeleteCardOpen={isDeleteCardOpen}
-                isZoomImageOpen={isZoomImageOpen}
-                selectedCard={selectedCard}
-                onEditAvatarClick={handleEditAvatarClick}
-                onEditProfileClick={handleEditProfileClick}
-                onAddPlaceClick={handleAddPlaceClick}
-                onDeleteCardClick={handleDeleteCardClick}
-                onCardClick={handleZoomImageClick}
-                onClose={closeAllPopouts}
-                onUpdateUser={handleUpdateUser}
-                onUpdateAvatar={handleAvatarUpdate}
-                onAddPlace={handleAddPlace}
-                handleCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-              ></Main>
+
               <Footer></Footer>
             </div>
+            <div
+              id="overlay"
+              className={
+                isAddPlacePopoutOpen ||
+                isEditAvatarPopoutOpen ||
+                isEditProfilePopoutOpen ||
+                selectedCard.link ||
+                isDeleteCardOpen ||
+                isInfoTooltipOpen
+                  ? "active"
+                  : ""
+              }
+              onClick={closeAllPopouts}
+            ></div>
           </div>
         </PopupContext.Provider>
       </CurrentCardContext.Provider>

@@ -83,19 +83,6 @@ function Main(props) {
         card={props.selectedCard}
         onClose={props.onClose}
       ></ImagePopup>
-      <div
-        id="overlay"
-        className={
-          props.isAddPlacePopoutOpen ||
-          props.isEditAvatarPopoutOpen ||
-          props.isEditProfilePopoutOpen ||
-          props.selectedCard.link ||
-          props.isDeleteCardOpen
-            ? "active"
-            : ""
-        }
-        onClick={props.onClose}
-      ></div>
     </main>
   );
 }

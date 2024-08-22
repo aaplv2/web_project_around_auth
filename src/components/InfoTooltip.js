@@ -1,18 +1,20 @@
 import React from "react";
+import "../blocks/popup-infoTooltip.css";
+import successIcon from "../images/success-icon.svg";
+import errorIcon from "../images/error-icon.svg";
+import closeButtonPath from "../images/close-icon.svg";
 
 export default function ({ isOpen, onClose, isSuccess }) {
   return (
-    <div
-      className={`popup-infoTooltip ${
-        isOpen ? "popup-infoTooltip_active" : ""
-      }`}
-    >
+    <div className={`popup-infoTooltip ${isOpen ? "active" : ""}`}>
       <div className="popup-infoTooltip__content">
         <button
           type="button"
-          className="popup-infoTooltip__close-btn"
+          className="popup-infoTooltip__button-close"
           onClick={onClose}
-        ></button>
+        >
+          <img src={closeButtonPath} alt="Boton de cerrar" className="close" />
+        </button>
         <div className="popup-infoTooltip__body">
           <div className="popup-infoTooltip__icon">
             {isSuccess ? (
