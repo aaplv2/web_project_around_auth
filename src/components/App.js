@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
@@ -26,6 +26,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [currentCards, setCurrentCards] = useState([]);
   const [loggedIn, setIsLoggedIn] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     api.getUserInfo().then((data) => {
@@ -111,6 +113,18 @@ function App() {
     });
   };
 
+  const handleRegister = () => {
+    setIsSuccess(true);
+    setIsInfoTooltipOpen(true);
+    navigate("/signin");
+  };
+
+  const handleLogin = () => {
+    setIsSuccess(true);
+    setIsInfoTooltipOpen(true);
+    navigate("/");
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <CurrentCardContext.Provider value={currentCards}>
@@ -119,14 +133,29 @@ function App() {
             <div className="page">
               <Header></Header>
               <Routes>
-                <Route path="/signup" element={<Register />} />
+                <Route
+                  path="/signup"
+                  element={
+                    <Register
+                      handleRegister={handleRegister}
+                      handleCloseTooltip={closeAllPopouts}
+                      isInfoTooltipOpen={isInfoTooltipOpen}
+                      setIsInfoTooltipOpen={setIsInfoTooltipOpen}
+                      isSuccess={isSuccess}
+                      setIsSuccess={setIsSuccess}
+                    />
+                  }
+                />
                 <Route
                   path="/signin"
                   element={
                     <Login
+                      handleLogin={handleLogin}
                       handleCloseTooltip={closeAllPopouts}
                       isInfoTooltipOpen={isInfoTooltipOpen}
                       setIsInfoTooltipOpen={setIsInfoTooltipOpen}
+                      isSuccess={isSuccess}
+                      setIsSuccess={setIsSuccess}
                     />
                   }
                 />

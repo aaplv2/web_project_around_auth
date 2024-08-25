@@ -1,6 +1,6 @@
-export const BASE_URL = "https://register.nomoreparties.co";
+// export const BASE_URL = "https://register.nomoreparties.co";
 // export const BASE_URL = "https://express-api-tripleten.vercel.app/";
-// export const BASE_URL = "https://dummyjson.com/docs/auth#auth-login";
+export const BASE_URL = "https://tripleten.desarrollointerno.com";
 // repo: https://github.com/HoracioGutierrez/express-api-tripleten.git
 
 export const register = (email, password) => {
@@ -13,7 +13,7 @@ export const register = (email, password) => {
     body: JSON.stringify({ email, password }),
   })
     .then((response) => {
-      if (response.status === 201) {
+      if (response.status === 200) {
         return response.json();
       }
     })
@@ -36,8 +36,7 @@ export const authorize = (email, password) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      if (data.jwt) {
+      if (data.token) {
         localStorage.setItem("jwt", data.jwt);
         return data;
       }

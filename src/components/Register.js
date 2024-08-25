@@ -1,34 +1,39 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as auth from "../utils/auth.js";
 import "../blocks/register.css";
 import InfoTooltip from "./InfoTooltip.js";
 
-export default function Register({ onRegister }) {
+export default function Register({
+  handleRegister,
+  handleCloseTooltip,
+  isInfoTooltipOpen,
+  setIsInfoTooltipOpen,
+  isSuccess,
+  setIsSuccess,
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    auth.register(email, password).then((data) => {
-      if (data._id) {
-        setEmail("");
-        setPassword("");
-        setIsSuccess(true);
+    auth
+      .register(email, password)
+      .then((data) => {
+        if (data._id) {
+          setEmail("");
+          setPassword("");
+          handleRegister();
+          setIsSuccess(true);
+          setIsInfoTooltipOpen(true);
+        }
+      })
+      .catch((err) => {
+        setErrorMessage("Error de autorización.");
+        setIsSuccess(false);
         setIsInfoTooltipOpen(true);
-        onRegister();
-        navigate("/signin");
-      }
-    });
-  };
-
-  const handleCloseTooltip = () => {
-    setIsInfoTooltipOpen(false);
+      });
   };
 
   return (
@@ -53,16 +58,18 @@ export default function Register({ onRegister }) {
           onChange={(e) => setPassword(e.target.value)}
           required
         ></input>
-        <button className="register__button" type="submit">
-          Regístrate
-        </button>
+
         {errorMessage && (
           <InfoTooltip
-            isOpen={isInfoTooltipOpen}
+            isInfoTooltipOpen={isInfoTooltipOpen}
             onClose={handleCloseTooltip}
             isSuccess={isSuccess}
           />
         )}
+
+        <button className="register__button" type="submit">
+          Regístrate
+        </button>
       </form>
       <p className="register__signin">
         ¿Ya eres miembro? {""}

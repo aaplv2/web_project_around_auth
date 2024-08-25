@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as auth from "../utils/auth.js";
 import "../blocks/login.css";
 import InfoTooltip from "./InfoTooltip.js";
@@ -9,13 +9,12 @@ export default function Login({
   handleCloseTooltip,
   isInfoTooltipOpen,
   setIsInfoTooltipOpen,
+  isSuccess,
+  setIsSuccess,
 }) {
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,13 +24,12 @@ export default function Login({
     auth
       .authorize(email, password)
       .then((data) => {
-        if (data.jwt) {
+        if (data.token) {
           setEmail("");
           setPassword("");
+          handleLogin();
           setIsSuccess(true);
           setIsInfoTooltipOpen(true);
-          handleLogin();
-          navigate("/");
         }
       })
       .catch((err) => {
@@ -63,15 +61,15 @@ export default function Login({
           onChange={(e) => setPassword(e.target.value)}
           required
         ></input>
-        <div className="form__error">
-          {errorMessage && (
-            <InfoTooltip
-              isOpen={isInfoTooltipOpen}
-              onClose={handleCloseTooltip}
-              isSuccess={isSuccess}
-            />
-          )}
-        </div>
+
+        {errorMessage && (
+          <InfoTooltip
+            isInfoTooltipOpen={isInfoTooltipOpen}
+            onClose={handleCloseTooltip}
+            isSuccess={isSuccess}
+          />
+        )}
+
         <button className="login__button" type="submit">
           Inicia sesión
         </button>

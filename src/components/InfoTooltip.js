@@ -4,9 +4,9 @@ import successIcon from "../images/success-icon.svg";
 import errorIcon from "../images/error-icon.svg";
 import closeButtonPath from "../images/close-icon.svg";
 
-export default function ({ isOpen, onClose, isSuccess }) {
+export default function ({ isInfoTooltipOpen, onClose, isSuccess }) {
   return (
-    <div className={`popup-infoTooltip ${isOpen ? "active" : ""}`}>
+    <div className={`popup-infoTooltip ${isInfoTooltipOpen ? "active" : ""}`}>
       <div className="popup-infoTooltip__content">
         <button
           type="button"
@@ -18,7 +18,7 @@ export default function ({ isOpen, onClose, isSuccess }) {
         <div className="popup-infoTooltip__body">
           <div className="popup-infoTooltip__icon">
             {isSuccess ? (
-              <img src={successIcon} alt="Success" />
+              <img src={successIcon} alt="Exito" />
             ) : (
               <img src={errorIcon} alt="Error" />
             )}
