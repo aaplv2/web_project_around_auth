@@ -1,6 +1,6 @@
 # Around The Us
 
-## Tripleten web_project_around_react
+## Tripleten web_project_around_auth
 
 - Perfil de usuario para personas haciendo viajes alrededor del mundo.
 - Permite editar nombre y caracteristicas del perfil de usuario.
@@ -22,7 +22,17 @@
 - Trabajo con programacion asíncrona.
 - Página Web implementado con código declarativo.
 - Proyecto desplegado en GitHub Pages.
-- GitHub Pages: https://aaplv2.github.io/web_project_around_react/
+- GitHub Pages: https://aaplv2.github.io/web_project_around_auth/
+
+## Backend
+
+- Configuración de usuario en Express.js.
+- Reglas de backend en linter ESlint, para permitir uso de "\_id" y console.log sin advertencias.
+- Creacion de base de datos por medio de API REST
+- Nodemon para hotreload. Tambien esta la posibilidad de lanzar proyecto sin este.
+- Estructura de proyecto siguiendo especificaciones de ruta.
+- Módulos incluidos por medio de require.
+- Rutas para registarse e iniciar sesión.
 
 ## Características
 
@@ -37,6 +47,23 @@
 - GitHub
 - React
 - Programación declarativa.
+- Creación y mantención de usuario.
+
+## Tecnologías y técnicas
+
+- JavaScript
+- Node.js
+- Express.js
+- ESlint
+- camelCase
+- Postman
+- mongoDBCompass
+
+## Rutas
+
+- localhost:3000/signup
+- localhost:3000/signin
+- localhost:3000/users/me
 
 ## Capturas
 
