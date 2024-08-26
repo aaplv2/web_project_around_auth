@@ -4,7 +4,7 @@ import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
 import api from "../utils/api.js";
-import auth from "../utils/auth.js";
+import { getUser } from "../utils/auth.js";
 
 import "../index.css";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
@@ -13,6 +13,7 @@ import { PopupContext } from "../contexts/PopupProvider.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import Register from "./Register.js";
 import Login from "./Login.js";
+import InfoTooltip from "./InfoTooltip.js";
 
 function App() {
   const [isAddPlacePopoutOpen, setIsAddPlacePopoutOpen] = useState(false);
@@ -25,7 +26,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [currentCards, setCurrentCards] = useState([]);
-  const [loggedIn, setIsLoggedIn] = useState(true);
+  const [loggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -119,10 +120,14 @@ function App() {
     navigate("/signin");
   };
 
-  const handleLogin = () => {
-    setIsSuccess(true);
-    setIsInfoTooltipOpen(true);
-    navigate("/");
+  const handleLogin = (token) => {
+    getUser(token).then((data) => {
+      console.log(data);
+      setIsLoggedIn(true);
+      setIsSuccess(true);
+      setIsInfoTooltipOpen(true);
+      navigate("/");
+    });
   };
 
   return (
@@ -159,6 +164,7 @@ function App() {
                     />
                   }
                 />
+
                 <Route
                   path="/"
                   element={
@@ -186,7 +192,11 @@ function App() {
                   }
                 />
               </Routes>
-
+              <InfoTooltip
+                isInfoTooltipOpen={isInfoTooltipOpen}
+                onClose={closeAllPopouts}
+                isSuccess={isSuccess}
+              />
               <Footer></Footer>
             </div>
             <div

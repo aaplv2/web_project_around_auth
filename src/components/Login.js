@@ -27,7 +27,7 @@ export default function Login({
         if (data.token) {
           setEmail("");
           setPassword("");
-          handleLogin();
+          handleLogin(data.token);
           setIsSuccess(true);
           setIsInfoTooltipOpen(true);
         }
