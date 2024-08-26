@@ -27,6 +27,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [currentCards, setCurrentCards] = useState([]);
   const [loggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
   const navigate = useNavigate();
 
@@ -37,6 +38,18 @@ function App() {
     api.getInitialCards().then((data) => {
       setCurrentCards(data);
     });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      getUser(token).then((data) => {
+        setIsLoggedIn(true);
+        setCurrentUser(data);
+        setUserEmail(data.email);
+        navigate("/");
+      });
+    }
   }, []);
 
   const handleEditAvatarClick = () => {
@@ -122,12 +135,20 @@ function App() {
 
   const handleLogin = (token) => {
     getUser(token).then((data) => {
-      console.log(data);
+      setUserEmail(data.name);
       setIsLoggedIn(true);
       setIsSuccess(true);
       setIsInfoTooltipOpen(true);
       navigate("/");
     });
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserEmail("");
+    setCurrentUser({});
+    localStorage.clear();
+    navigate("/sigin");
   };
 
   return (
@@ -136,7 +157,11 @@ function App() {
         <PopupContext.Provider value={selectedCard}>
           <div className="body">
             <div className="page">
-              <Header></Header>
+              <Header
+                isLoggedIn={loggedIn}
+                isUser={userEmail}
+                onLogout={handleLogout}
+              ></Header>
               <Routes>
                 <Route
                   path="/signup"
@@ -187,6 +212,7 @@ function App() {
                         onAddPlace={handleAddPlace}
                         handleCardLike={handleCardLike}
                         onCardDelete={handleCardDelete}
+                        email={userEmail}
                       ></Main>
                     </ProtectedRoute>
                   }

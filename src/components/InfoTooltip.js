@@ -25,7 +25,7 @@ export default function ({ isInfoTooltipOpen, onClose, isSuccess }) {
           </div>
           <h3 className="popup-infoTooltip__title">
             {isSuccess
-              ? "¡Correcto! Ya estás registrado."
+              ? "¡Correcto!"
               : "Uy, algo salió mal. Por favor, inténtalo de nuevo."}
           </h3>
         </div>

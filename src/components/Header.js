@@ -3,9 +3,6 @@ import logoAroundPath from "../images/around-the-us-white.svg";
 
 function Header({ isLoggedIn, isUser, onLogout }) {
   const location = useLocation();
-  const handleLogout = () => {
-    onLogout();
-  };
 
   return (
     <header className="header">
@@ -22,7 +19,7 @@ function Header({ isLoggedIn, isUser, onLogout }) {
                 <Link to="/profile" className="header__link">
                   {isUser}
                 </Link>
-                <Link className="header__button" onClick={handleLogout}>
+                <Link className="header__button" onClick={onLogout}>
                   Cerrar sesión
                 </Link>
               </div>
